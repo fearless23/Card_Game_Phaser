@@ -54,11 +54,12 @@ export class MenuScene extends Phaser.Scene {
     const cBtn = this.addText(btnX, btnY + 150, "SETTINGS", menuBGWidth);
     const dBtn = this.addText(btnX, btnY + 200, "FEEDBACK", menuBGWidth);
 
+    const cat = "TEMP14"
     aBtn.on("pointerup", () => {
-      this.scene.start(CST.SCENES.NEWGAME);
+      this.scene.start(CST.SCENES.NEWGAME, { tmpCategory: cat });
     });
     bBtn.on("pointerup", () => {
-      this.scene.start(CST.SCENES.JOINGAME);
+      this.scene.start(CST.SCENES.JOINGAME, { tmpCategory: cat });
     });
   }
 }

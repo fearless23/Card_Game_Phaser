@@ -10,7 +10,7 @@ export class CardImage extends Phaser.GameObjects.Image {
     // scene.sys.updateList.add(this);
     scene.sys.displayList.add(this);
     // Defaults
-    this.setScale(0.4);
+    this.setScale(0.5);
     this.setDepth(1);
   }
 }

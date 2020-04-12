@@ -28,8 +28,4 @@ export class Players {
   getPlayers() {
     return this.players;
   }
-
-  printPlayers() {
-    console.log(this.players);
-  }
 }

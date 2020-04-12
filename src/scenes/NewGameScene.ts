@@ -1,12 +1,16 @@
 import { CST } from "../CST";
 import { gamesDB } from "../fbdb/fbdb";
+import { GameType } from "../fbdb/GameType";
 
 export class NewGameScene extends Phaser.Scene {
+  tmpCategory!: string;
   constructor() {
     super({ key: CST.SCENES.NEWGAME });
   }
 
-  init() {}
+  init(d: { tmpCategory: string }) {
+    this.tmpCategory = d.tmpCategory;
+  }
 
   create() {
     // Later, take user input
@@ -14,7 +18,8 @@ export class NewGameScene extends Phaser.Scene {
     const randomGame = {
       name: "Court Peice",
       id: Math.floor(Math.random() * 10) + 1,
-      category: category(),
+      // category: category(),
+      category: this.tmpCategory,
       maxPlayers: 4,
       playersJoined: 1,
       private: false,
@@ -22,7 +27,8 @@ export class NewGameScene extends Phaser.Scene {
     };
     const currentPlayer = {
       name: "Jassi",
-      idx: 1,
+      idx: 0,
+      admin: true,
     };
     const docId = gamesDB.doc().id;
 
@@ -33,7 +39,15 @@ export class NewGameScene extends Phaser.Scene {
     });
 
     gamesDB.doc(docId).onSnapshot((d) => {
-      console.log(d.data());
+      const doc = <GameType>d.data();
+      if (doc.playersJoined === doc.maxPlayers) {
+        this.scene.start(CST.SCENES.PLAY, {
+          me: { ...currentPlayer, admin: true },
+          // playersNames: ["Jassi", "Sushil", "Pandit", "Akshay"],
+          playersNames: doc.players.map((x) => x.name),
+          gameId: doc.docId,
+        });
+      }
     });
   }
 }
